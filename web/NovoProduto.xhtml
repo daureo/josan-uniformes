@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template/LayoutPadrao.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:define name="centro">
+        <h:form id="form1">
+            
+            <p:panelGrid columns="4" style="text-align: right">
+                <f:facet name="header">
+                    Produto
+                </f:facet>
+
+                <h:outputLabel value="Nome"/>
+                <p:inputText value="#{novoProdutoBean.produto.nome}" required="true" label="Nome" />
+
+                <h:outputLabel value="Código de Referência"/>
+                <p:inputText value="" disabled="true" size="1"/>
+
+                <h:outputLabel value="Tamanho"/>
+                <p:inputText value="#{novoProdutoBean.produto.tamanho}" size="2"
+                             label="Tamanho"/>
+
+                <h:outputLabel value="Descrição"/>
+                <p:inputText value="#{novoProdutoBean.produto.descricao}"
+                             label="Descrição"/>
+
+                <h:outputLabel value="Valor Compra"/>
+                <p:inputText value="#{novoProdutoBean.produto.valorCompra}" size="2"
+                             label="Valor Compra">
+                    
+                </p:inputText>
+
+                <h:outputLabel value="Valor Venda"/>
+                <p:inputText value="#{novoProdutoBean.produto.valorVenda}" size="2"
+                             label="Valor Venda">
+                    
+                </p:inputText>
+
+                <h:outputLabel value="Quantidade Mínima"/>
+                <p:spinner value="#{novoProdutoBean.produto.quantidadeMin}" size="1"
+                           label="Quantidade Mínima"/>
+
+                <f:facet name="footer">
+                    <h:commandButton value="Salvar" action="#{novoProdutoBean.salvar()}"/>
+                </f:facet>
+            </p:panelGrid>
+            <p:growl showDetail="false"/>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

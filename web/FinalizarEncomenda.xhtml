@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template/LayoutPadrao.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="centro">
+        <p:panel header="Finalizar Encomenda" id="corpo">
+
+
+            <h:form id="pesquisa">
+                <h:outputLabel value="Número da Encomenda" />
+                <p:inputText value="#{finalizarEncomendaBean.numero}" />
+                <p:commandButton value="Localizar" update="resultado" 
+                                 actionListener="#{finalizarEncomendaBean.localizar}"/>
+
+                <br /><br />
+                <p:panel
+                    id="resultado" style="border: none" >
+                    <p:panelGrid columns="4" rendered="#{finalizarEncomendaBean.encomenda != null}">
+                        <f:facet name="header">Encomenda - #{finalizarEncomendaBean.encomenda.numero}</f:facet>
+
+                        <h:outputText value="Cliente" style="font-size: 16px"/>
+                        <h:outputText value="#{finalizarEncomendaBean.encomenda.clienteCodigo.nome}" id="cliente" />
+
+                        <h:outputText value="Data" style="font-size: 16px"/>
+                        <h:outputText value="#{finalizarEncomendaBean.encomenda.dataEncomenda}" id="data">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+                        <h:outputLabel /><h:outputLabel />
+                        <h:outputText value="Data Fechamento" style="font-size: 16px"/>
+                        <h:outputText value="#{finalizarEncomendaBean.encomenda.dataEntrega}" id="dataEntrega">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:outputText>
+
+                        <f:facet name="footer">
+                            <p:dataTable value="#{finalizarEncomendaBean.encomenda.produtoEncomendaList}" var="produto">
+                                <p:column>
+                                    <f:facet name="header">Nome</f:facet>
+                                        #{produto.produto.nome}
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">Quantidade</f:facet>
+                                        #{produto.quantidade}
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">Valor Unitário</f:facet>
+                                    <h:outputLabel value="#{produto.produto.valorVenda}">
+                                        <f:convertNumber locale="pt_BR" type="currency"
+                                                         currencySymbol="R$"/>
+                                    </h:outputLabel>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">Valor Total</f:facet>
+                                    <h:outputLabel value="#{produto.valor}">
+                                        <f:convertNumber locale="pt_BR" type="currency"
+                                                         currencySymbol="R$"/>
+                                    </h:outputLabel>
+                                </p:column>
+                                <f:facet name="footer">
+                                    Valor Total: 
+                                    <h:outputLabel value="#{finalizarEncomendaBean.total}">
+                                        <f:convertNumber locale="pt_BR" type="currency"
+                                                         currencySymbol="R$"/>
+                                    </h:outputLabel>
+                                </f:facet>
+                            </p:dataTable>
+
+
+
+                        </f:facet>
+
+                    </p:panelGrid>
+                    <p:messages closable="true" id="msg"/>
+
+                </p:panel>
+               
+                <p:growl/>
+                 <h:commandButton value="Finalizar" 
+                                 action="#{finalizarEncomendaBean.finalizar}"/>
+            </h:form>
+
+
+        </p:panel>
+    </ui:define>
+
+</ui:composition>

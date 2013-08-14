@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Meu Sistema</title>
+        <style type="text/css">
+            body {background-color: #eeeeee; font-size: 12px}
+        </style> 
+    </h:head>
+    <h:body>
+        <div align="center">
+            <p:layout style="min-width:1200px;max-width:1200px;min-height:800px">  
+                <p:layoutUnit position="north" size="200">  
+                    <h:graphicImage url="/imagens/Josan.png" width="200" height="100%"  />
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="west" size="220">  
+                    <ui:insert name="menu">
+                        <h:form>
+                            <p:panelMenu style="width: 200px" >
+                                <p:submenu label="Menu">
+                                    <p:menuitem value="Início" action="index?faces-redirect=true"/>
+                                    <p:menuitem value="Estoque" action="Estoque?faces-redirect=true"/>
+                                </p:submenu>   
+                                <p:submenu label="Encomendas">
+                                    <p:menuitem value="Nova" action="NovaEncomenda?faces-redirect=true"/>
+                                    <p:menuitem value="Fechar" action="FinalizarEncomenda?faces-redirect=true"/>
+                                </p:submenu>    
+                                <p:submenu label="Clientes">
+                                    <p:menuitem value="Novo Cliente Físico" action="NovoClienteFisico?faces-redirect=true"/>
+                                    <p:menuitem value="Novo Cliente Jurídico" action="NovoClienteJuridico?faces-redirect=true"/>
+                                </p:submenu>    
+                                <p:submenu label="Relatórios" >
+                                    <p:menuitem value="Material Disponível" action="RelatorioDeMaterialDisponivel?faces-redirect=true"/>
+                                    <p:menuitem value="Material em Falta" action="RelatorioDeMaterialEmFalta?faces-redirect=true"/>
+                                    <p:menuitem value="Encomendas" action="RelatorioDeEncomendas?faces-redirect=true"/>
+                                </p:submenu>                                 
+                            </p:panelMenu>
+                        </h:form>
+                    </ui:insert>
+                </p:layoutUnit>  
+                <p:layoutUnit position="center">  
+                    <ui:insert name="centro">
+                        JOSAN UNIFORMES!
+                    </ui:insert>
+                </p:layoutUnit>  
+            </p:layout>  
+        </div>
+        <p:growl/>
+    </h:body>
+</html>

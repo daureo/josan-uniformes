@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template/LayoutPadrao.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <ui:define name="centro">
+        <p:growl id="mensagens"/>
+        <h:form id="form">
+
+            <p:dataTable var="produto" value="#{estoqueBean.listaProdutos}" 
+                         rowKey="#{car.codReferencia}"
+                         paginator="#{estoqueBean.listaProdutos.size() > 5}" 
+                         rows="5"
+                         filteredValue="#{estoqueBean.listaProdutosFiltrados}" 
+                         id="carsTable"
+                         editable="true">
+
+
+
+                <f:facet name="header">Estoque - Produtos</f:facet>
+
+                <p:column headerText="Cod. Referência" sortBy="#{produto.codReferencia}" 
+                          style="width: 6%"
+                          filterBy="#{produto.codReferencia}">
+
+                    <h:outputText value="#{produto.codReferencia}" />
+
+                </p:column>
+
+                <p:column headerText="Nome" sortBy="#{produto.nome}"
+                          filterBy="#{produto.nome}">                   
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{produto.nome}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{produto.nome}" style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Descrição" sortBy="#{produto.descricao}">                   
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{produto.descricao}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{produto.descricao}" style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Valor de Compra" sortBy="#{produto.valorCompra}">                   
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{produto.valorCompra}" >
+                                <f:convertNumber locale="pt_BR" type="currency"
+                                                 currencySymbol="R$"/>
+                            </h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{produto.valorCompra}" style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Valor de Venda" sortBy="#{produto.valorVenda}">                   
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{produto.valorVenda}" >
+                                <f:convertNumber locale="pt_BR" type="currency"
+                                                 currencySymbol="R$"/>
+                            </h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{produto.valorVenda}" style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Tamanho" sortBy="#{produto.tamanho}">                   
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{produto.tamanho}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{produto.tamanho}" style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Quantidade Mínima" sortBy="#{produto.quantidadeMin}" style="width: 6%">                   
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{produto.quantidadeMin}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:spinner value="#{produto.quantidadeMin}"
+
+                                       style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Quantidade" sortBy="#{produto.quantidade}" style="width: 6%">                   
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{produto.quantidade}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:spinner value="#{produto.quantidade}"
+                                       style="width:100%"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+
+
+                <p:column style="width: 6%">
+                    <p:rowEditor/>
+                </p:column>
+
+                <f:facet name="footer">
+                    <p:commandButton id="showDialogButton" icon="ui-icon-selected" 
+                                     onclick="msgConf.show();" 
+                                     type="button" 
+                                     update="@this"
+                                     label="Novo"
+                                     title="Novo"/>
+
+                </f:facet>
+            </p:dataTable>
+
+        </h:form>
+        <p:dialog widgetVar="msgConf" header="Novo Produto"                             
+                  appendToBody="true"                                                           
+                  id="confMesg"
+                  resizable="false"
+                  modal="true"
+                  dynamic="true"
+
+                  >
+
+            <h:form id="form1">
+
+                <p:panelGrid columns="4" style="text-align: right">
+                    <f:facet name="header">
+                        Produto
+                    </f:facet>
+
+                    <h:outputLabel value="Nome"/>
+                    <p:inputText value="#{novoProdutoBean.produto.nome}" required="true" label="Nome" />
+
+                    <h:outputLabel value="Código de Referência"/>
+                    <p:inputText value="" disabled="true" size="1"/>
+
+                    <h:outputLabel value="Tamanho"/>
+                    <p:inputText value="#{novoProdutoBean.produto.tamanho}" size="2"
+                                 label="Tamanho"/>
+
+                    <h:outputLabel value="Descrição"/>
+                    <p:inputText value="#{novoProdutoBean.produto.descricao}"
+                                 label="Descrição"/>
+
+                    <h:outputLabel value="Valor Compra"/>
+                    <p:inputText value="#{novoProdutoBean.produto.valorCompra}" size="2"
+                                 label="Valor Compra">
+
+                    </p:inputText>
+
+                    <h:outputLabel value="Valor Venda"/>
+                    <p:inputText value="#{novoProdutoBean.produto.valorVenda}" size="2"
+                                 label="Valor Venda">
+
+                    </p:inputText>
+
+                    <h:outputLabel value="Quantidade Mínima"/>
+                    <p:spinner value="#{novoProdutoBean.produto.quantidadeMin}" size="1"
+                               label="Quantidade Mínima"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Salvar" action="#{novoProdutoBean.salvar()}"
+                                         update="@all"/>
+                    </f:facet>
+                </p:panelGrid>
+                <p:growl id="mensagens"/>
+            </h:form>   
+
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

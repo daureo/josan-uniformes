@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template/LayoutPadrao.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <ui:define name="centro">
+        <p:panel header="Nova Encomenda" footer="JOSAN UNIFORMES">
+
+            <h:form id="form1">
+
+                <!--Produtos cadastrados -->
+                <p:dataTable var="produto" value="#{estoqueBean.listaProdutos}"
+                             paginator="#{estoqueBean.listaProdutos.size() > 5}" 
+                             rows="5"
+                             filteredValue="#{estoqueBean.listaProdutosFiltrados}" 
+                             id="carsTable"
+                             editable="true">
+
+
+
+                    <f:facet name="header">Lista - Produtos</f:facet>
+
+                    <p:column headerText="Cod. Referência" sortBy="#{produto.codReferencia}" 
+                              style="width: 6%"
+                              filterBy="#{produto.codReferencia}">
+
+                        <h:outputText value="#{produto.codReferencia}" />
+
+                    </p:column>
+
+                    <p:column headerText="Nome" sortBy="#{produto.nome}"
+                              filterBy="#{produto.nome}">               
+                        <h:outputText value="#{produto.nome}" />
+                    </p:column>
+
+                    <p:column headerText="Descrição" sortBy="#{produto.descricao}">  
+                        <h:outputText value="#{produto.descricao}" />
+                    </p:column>
+
+                    <p:column headerText="Valor" sortBy="#{produto.valorVenda}">                 
+                        <h:outputText value="#{produto.valorVenda}" >
+                            <f:convertNumber locale="pt_BR" type="currency"
+                                             currencySymbol="R$"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Tamanho" sortBy="#{produto.tamanho}">                   
+                        <h:outputText value="#{produto.tamanho}" />                           
+                    </p:column>
+
+
+                    <p:column style="width: 6%">
+                        
+                        <h:commandButton
+                            action="#{novaEncomendaBean.adicionarProduto}"  
+                            value="+"  
+                            immediate="true"
+                            >          
+
+                            <f:setPropertyActionListener value="#{produto}"
+                                                         target="#{novaEncomendaBean.produtoSelecionado}" />
+                           
+
+
+
+                        </h:commandButton>
+                    </p:column>
+
+                    <f:facet name="footer">
+
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
+            <!-- fim de produtos cadastrados -->
+
+            <!-- Lista de encomenda -->
+            <h:form id="form2">          
+                <p:dataTable var="produto" value="#{novaEncomendaBean.produtosSelecionados}"                             
+                             paginator="#{novaEncomendaBean.produtosSelecionados.size() > 5}" 
+                             rows="5"                     
+                             id="lista"
+                             editable="false"
+                             rendered="#{novaEncomendaBean.produtosSelecionados.size() > 0 }">
+
+
+
+                    <f:facet name="header">Lista - Encomenda</f:facet>
+
+                    <p:column headerText="Cod. Referência"
+                              style="width: 6%"
+                              filterBy="#{produto.codReferencia}">
+
+                        <h:outputText value="#{produto.codReferencia}" />
+
+                    </p:column>
+
+                    <p:column headerText="Nome" 
+                              filterBy="#{produto.nome}">               
+                        <h:outputText value="#{produto.nome}" />
+                    </p:column>
+
+                    <p:column headerText="Descrição" >  
+                        <h:outputText value="#{produto.descricao}" />
+                    </p:column>
+
+                    <p:column headerText="Valor" >                 
+                        <h:outputText value="#{produto.valorVenda}" >
+                            <f:convertNumber locale="pt_BR" type="currency"
+                                             currencySymbol="R$"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Tamanho">                   
+                        <h:outputText value="#{produto.tamanho}" />                           
+                    </p:column>
+
+
+                    <p:column style="width: 6%">
+
+                        <h:commandButton
+                            action="#{novaEncomendaBean.removerProduto}"  
+                            value="-"
+                            immediate="true"
+                            >                            
+                            <f:setPropertyActionListener value="#{produto}"
+                                                         target="#{novaEncomendaBean.produtoSelecionado}" />
+
+                        </h:commandButton>
+                    </p:column>
+
+                    <f:facet name="footer">
+
+                    </f:facet>
+                </p:dataTable>
+                <!-- fim de lista de produtos -->
+                <br ></br><br ></br>
+                <!-- Cliente -->
+
+                <p:panelGrid columns="3">
+                    <p:outputLabel value="Cliente" for="cliente"/> 
+
+                    <p:selectOneMenu  id="cliente" value="#{novaEncomendaBean.cliente}" style="font-size: 12px; text-emphasis: black"
+                                      panelStyle="width:150px"  
+                                      effect="fade">
+                        <f:selectItem itemLabel="Selecione..." noSelectionOption="true"/>
+                        <f:selectItems var="cliente" value="#{novaEncomendaBean.listaClientes}"
+                                       itemLabel="#{cliente.nome}"
+                                       itemValue="#{cliente}"/>
+                    </p:selectOneMenu>
+
+                    <h:commandButton value="Encomendar" action="#{novaEncomendaBean.salvarEncomenda}"/>
+                    <p:commandButton id="modalDialogButton" value="Novo" onclick="dlg2.show();" type="button"/>  
+                </p:panelGrid>
+                <p:growl/>
+                <p:messages showSummary="true" showDetail="false"/>
+            </h:form>
+            <p:dialog id="modalDialog" header="Novo Cliente" widgetVar="dlg2">  
+                <h:form>
+                    <p:button value="Cliente Físico" 
+                              outcome="NovoClienteFisico?faces-redirect=true"/>
+                    <p:button value="Cliente Jurídico" outcome="NovoClienteJuridico?faces-redirect=true"/>
+                </h:form>
+            </p:dialog>  
+            <!-- fim de cliente -->
+        </p:panel>
+    </ui:define>
+
+</ui:composition>
