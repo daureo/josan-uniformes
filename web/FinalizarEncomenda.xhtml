@@ -13,7 +13,7 @@
 
             <h:form id="pesquisa">
                 <h:outputLabel value="Número da Encomenda" />
-                <p:inputText value="#{finalizarEncomendaBean.numero}" />
+                <p:inputText value="#{finalizarEncomendaBean.numero}" required="true"/>
                 <p:commandButton value="Localizar" update="resultado" 
                                  actionListener="#{finalizarEncomendaBean.localizar}"/>
 

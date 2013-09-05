@@ -1,5 +1,6 @@
 package com.josan.view;
 
+import com.josan.controller.GerarComprovanteEncomenda;
 import com.josan.controller.GestaoClientes;
 import com.josan.controller.GestaoEncomendas;
 import com.josan.model.Cliente;
@@ -9,6 +10,9 @@ import com.josan.model.ProdutoContado;
 import com.josan.model.ProdutoEncomenda;
 import com.josan.model.ProdutoEncomendaPK;
 import com.josan.util.FacesUtil;
+import com.lowagie.text.DocumentException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +40,7 @@ public class NovaEncomendaBean {
     private ProdutoContado produtoContado;
     private Cliente cliente;
 
-    public void salvarEncomenda() {
+    public void salvarEncomenda() throws DocumentException, FileNotFoundException, IOException {
 
         Encomenda encomenda = new Encomenda();
         encomenda.setClienteCodigo(cliente);
@@ -68,6 +72,10 @@ public class NovaEncomendaBean {
 
         
         FacesUtil.adicionarMensagem(FacesMessage.SEVERITY_INFO, "Número da Encomenda: " + encomendaSalva.getNumero());
+        
+        //Gerar recibo/comprovante
+        GerarComprovanteEncomenda gec = new GerarComprovanteEncomenda();
+        gec.gerar();
         
         this.produtosContados.clear();
         this.produtosSelecionados.clear();
